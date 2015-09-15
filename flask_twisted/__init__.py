@@ -25,6 +25,9 @@ class Twisted(Observable):
     def add_resource(self, name, resource):
         self.resources[name] = resource
 
+    def create_site(self, resource, **options):
+        return Site(resource)
+
     def run_simple(self, app, host, port, **options):
         self.trigger('run', app)
 
@@ -32,7 +35,7 @@ class Twisted(Observable):
             log.startLogging(sys.stdout)
 
         resource = WSGIResource(reactor, reactor.getThreadPool(), app)
-        site = Site(WSGIRootResource(resource, self.resources))
+        site = self.create_site(WSGIRootResource(resource, self.resources), **options)
 
         reactor.listenTCP(int(port), site, interface=host)
 
