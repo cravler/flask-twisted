@@ -12,6 +12,7 @@ from observable import Observable
 class Twisted(Observable):
 
     def __init__(self, app=None):
+        Observable.__init__(self)
         self.app = None
         self.resources = {}
 
